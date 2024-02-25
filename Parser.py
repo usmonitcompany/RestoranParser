@@ -31,7 +31,7 @@ class GetPics:
     self.picture_sizes = {"x": picture_sizes_input[0], "y": picture_sizes_input[1]}
     self.progress_bar = tqdm(range(self.getTotalSizePics()), desc="Progress", colour="green")
 
-    self.directory = self.mkdir_(os.getcwd(), "pictures")
+    self.directory = self.mkdir_(os.getcwd(), f"pictures {datetime.now().strftime('%d_%m_%Y %H-%M-%S')}")
 
   def parse_pictures(self):
     for rest_name, rest_data in self.data.items():
@@ -109,7 +109,7 @@ class Urls:
 
 
 class SaveToExcel:
-  def __init__(self, results):
+  def __init__(self, results, dir_path):
     self.results = results
 
     self.data_frames = []
@@ -122,7 +122,7 @@ class SaveToExcel:
         self.data_frames.append(pd.DataFrame(self.createDF(category_data), columns=self.headers))
         self.data_frames_category_names.append(category_name)
 
-      with pd.ExcelWriter(f"{restoran_name}.xlsx") as writer:
+      with pd.ExcelWriter(os.path.join(dir_path, f"{restoran_name}.xlsx")) as writer:
         for index, data_frame in enumerate(self.data_frames):
           data_frame.to_excel(writer, sheet_name=self.data_frames_category_names[index], index=False)
 
@@ -233,10 +233,13 @@ def dataValidation(data):
     .replace("'", '"')
 
 def saving(results):
-  with open(os.path.join(os.getcwd(), f"results{datetime.now().strftime('%d_%m_%Y|%H-%M-%S')}.json"), "w") as file:
+  path = os.path.join(os.getcwd(), f"Data {datetime.now().strftime('%d_%m_%Y %H-%M-%S')}")
+  os.mkdir(path)
+
+  with open(os.path.join(path, "results.json"), "w") as file:
     file.write(json.dumps(results, indent=4, ensure_ascii=False))
 
-  SaveToExcel(results)
+  SaveToExcel(results, path)
 
 
 menu_options = ["Dishes Parsing (urls_file)", "Download Pictures (results_json)", "Quit"]
