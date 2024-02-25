@@ -27,7 +27,7 @@ class GetPics:
 
     self.data = data
 
-    picture_sizes_input = str(input("Width and Height -> Format (215-320)")).split("-")
+    picture_sizes_input = str(input("Width and Height -> Format (w-h)  ")).split("-")
     self.picture_sizes = {"x": picture_sizes_input[0], "y": picture_sizes_input[1]}
     self.progress_bar = tqdm(range(self.getTotalSizePics()), desc="Progress", colour="green")
 
@@ -50,6 +50,8 @@ class GetPics:
 
                 self.progress_bar.update(1)
                 self.progress_bar.refresh()
+
+    self.progress_bar.close()
 
   def get_soloPic(self, picture_url, picture_name, category_path):
     img_data = requests.get(self.make_picUrl(picture_url)).content
@@ -112,8 +114,8 @@ class SaveToExcel:
 
     self.data_frames = []
     self.data_frames_category_names = []
-    self.headers = ["name", "description", "price", "weight", "picture", "calories", "carbohydrates", "fats",
-                    "proteins"]
+    self.headers = ["name", "description", "price", "weight", "calories", "carbohydrates", "fats",
+                    "proteins", "picture"]
 
     for restoran_name, restoran_data in results.items():
       for category_name, category_data in restoran_data.items():
@@ -231,7 +233,7 @@ def dataValidation(data):
     .replace("'", '"')
 
 def saving(results):
-  with open(os.path.join(os.getcwd(), f"results{datetime.now().strftime('%d-%m-%Y_%H:%M:%S')}.json"), "w") as file:
+  with open(os.path.join(os.getcwd(), f"results{datetime.now().strftime('%d_%m_%Y|%H-%M-%S')}.json"), "w") as file:
     file.write(json.dumps(results, indent=4, ensure_ascii=False))
 
   SaveToExcel(results)
