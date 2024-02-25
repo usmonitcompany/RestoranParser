@@ -1,0 +1,21 @@
+return fetch("https://eda.yandex.ru/api/v2/menu/retrieve/name?autoTranslate=false", {
+  "headers": {
+    "accept": "application/json, text/plain, */*",
+    "accept-language": "ru",
+    "sec-ch-ua": "\"Chromium\";v=\"122\", \"Not(A:Brand\";v=\"24\", \"Google Chrome\";v=\"122\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"macOS\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-origin",
+    "x-app-version": "16.39.4",
+    "x-device-id": "session",
+    "x-platform": "desktop_web",
+  },
+  "referrer": "https://eda.yandex.ru/r/name?placeSlug=name",
+  "referrerPolicy": "strict-origin-when-cross-origin",
+  "body": null,
+  "method": "GET",
+  "mode": "cors",
+  "credentials": "include"
+}).then(response => response.json());
